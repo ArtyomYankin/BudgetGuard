@@ -1,6 +1,8 @@
 ﻿using BG.Data;
 using BG.Repository.Auth;
+using BG.Repository.Transactions;
 using BG.Service.JWTService;
+using BG.Service.Transactions;
 using HP.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -48,8 +50,10 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<ITransactionsRepository, TransactionsRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITransactionsService, TransactionService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

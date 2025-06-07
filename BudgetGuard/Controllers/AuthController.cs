@@ -11,7 +11,7 @@ namespace HopePlanner.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IAuthService _authService, IJwtService _jwtService) : ControllerBase
+    public class AuthController(IAuthService _authService) : ControllerBase
     {
 
         [HttpPost("register")]
