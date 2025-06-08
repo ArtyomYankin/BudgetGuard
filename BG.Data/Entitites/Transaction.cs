@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace BG.Data.Entitites
 {
@@ -17,12 +12,12 @@ namespace BG.Data.Entitites
         public TransactionType Type { get; set; } // Доход/Расход
 
         // Внешние ключи
-        public int AccountId { get; set; }
-        public Account Account { get; set; }
+        public int UserAccountId { get; set; }
+        public UserAccount UserAccount { get; set; }
 
         [JsonIgnore]
         [IgnoreDataMember]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
         // Метка (например, "Продукты", "Кафе")

@@ -19,7 +19,7 @@ namespace HomePlanner.Entitites
         // Навигационные свойства
         [JsonIgnore]
         [IgnoreDataMember]
-        public ICollection<Account> Accounts { get; set; }
+        public ICollection<UserAccount> UserAccounts { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
         public ICollection<Category> Categories { get; set; }

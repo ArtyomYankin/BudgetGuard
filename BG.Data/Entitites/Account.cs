@@ -1,20 +1,15 @@
 ﻿using HomePlanner.Entitites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace BG.Data.Entitites
 {
-    public class Account
+    public class UserAccount
     {
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
         public decimal Balance { get; set; }
-        public string Currency { get; set; } = "USD";
+        public Currency Currency { get; set; }
         public bool IsActive { get; set; } = true;
 
         // Внешний ключ
@@ -25,5 +20,11 @@ namespace BG.Data.Entitites
         [JsonIgnore]
         [IgnoreDataMember]
         public ICollection<Transaction> Transactions { get; set; }
+    }
+    public enum Currency
+    {
+        USD,
+        BLR,
+        EUR,
     }
 }

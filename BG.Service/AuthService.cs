@@ -3,18 +3,7 @@ using BG.Models;
 using BG.Repository.Auth;
 using BG.Service.JWTService;
 using HomePlanner.Entitites;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HP.Service
 {
@@ -57,7 +46,14 @@ namespace HP.Service
             return new TokenResponseDto()
             {
                 RefreshToken = user.RefreshToken,
-                Token = token
+                Token = token,
+                User = new UserDto()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                }
             };
         }
 
@@ -71,12 +67,17 @@ namespace HP.Service
             user.RefreshToken = Guid.NewGuid().ToString(); // Генерируем новый Refresh Token
             await _authRepository.SaveChangesAsync();
 
-            
+
             return new TokenResponseDto()
             {
                 RefreshToken = user.RefreshToken,
                 Token = newToken
             };
+        }
+
+        public Task<User> GetUserById(int id)
+        {
+            return _authRepository.GetUserAsync(id);
         }
     }
 }

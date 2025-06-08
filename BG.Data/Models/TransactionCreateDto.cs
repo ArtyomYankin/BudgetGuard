@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BG.Data.Entitites;
+using System.ComponentModel.DataAnnotations;
 
 namespace BG.Data.Models
 {
@@ -9,14 +10,12 @@ namespace BG.Data.Models
         public decimal Amount { get; set; }
 
         [Required]
+        public TransactionType Type { get; set; }
+        [Required]
         [StringLength(200, MinimumLength = 3)]
         public string Description { get; set; }
-
-        [Required]
         public DateTime Date { get; set; } = DateTime.UtcNow;
-
-        [StringLength(50)]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         [Required]
         public int AccountId { get; set; }

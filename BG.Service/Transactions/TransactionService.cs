@@ -11,9 +11,11 @@ namespace BG.Service.Transactions
             var transaction = new Transaction
             {
                 Amount = transactionDto.Amount,
+                Type = transactionDto.Type,
                 Description = transactionDto.Description,
                 Date = transactionDto.Date,
-                AccountId = transactionDto.AccountId
+                CategoryId = transactionDto.CategoryId,
+                UserAccountId = transactionDto.AccountId
             };
 
             if (transaction.CategoryId == 0)
@@ -29,7 +31,9 @@ namespace BG.Service.Transactions
                 Amount = newTransaction.Amount,
                 Description = newTransaction.Description,
                 Date = newTransaction.Date,
-                AccountId = newTransaction.AccountId,
+                UserAccountId = newTransaction.UserAccountId,
+                TransactionType = transaction.Type,
+                Category = transaction.Category != null ? new CategoryDto { Id = transaction.Category.Id, Name = transaction.Category.Name } : null,
             };
         }
 

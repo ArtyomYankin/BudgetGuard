@@ -7,7 +7,7 @@ namespace BG.Data
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Budget> Budgets { get; set; }
@@ -22,8 +22,8 @@ namespace BG.Data
                 FirstName = "System",
                 LastName = "User",
                 Email = "system@budgetguard.com",
-                PasswordHash = "precomputed-hash", 
-                CreatedAt = new DateTime(2023, 1, 1), 
+                PasswordHash = "precomputed-hash",
+                CreatedAt = new DateTime(2023, 1, 1),
                 Role = "Admin"
             }
         );
@@ -67,9 +67,9 @@ namespace BG.Data
 
             // Связи для Transaction
             modelBuilder.Entity<Transaction>()
-                .HasOne(t => t.Account)
+                .HasOne(t => t.UserAccount)
                 .WithMany(a => a.Transactions)
-                .HasForeignKey(t => t.AccountId)
+                .HasForeignKey(t => t.UserAccountId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Transaction>()
@@ -93,9 +93,9 @@ namespace BG.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Связи для Account
-            modelBuilder.Entity<Account>()
+            modelBuilder.Entity<UserAccount>()
                 .HasOne(a => a.User)
-                .WithMany(u => u.Accounts)
+                .WithMany(u => u.UserAccounts)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
