@@ -12,11 +12,9 @@ namespace BG.Data.Entitites
         public Currency Currency { get; set; }
         public bool IsActive { get; set; } = true;
 
-        // Внешний ключ
         public int UserId { get; set; }
         public User? User { get; set; }
 
-        // Навигационные свойства
         [JsonIgnore]
         [IgnoreDataMember]
         public ICollection<Transaction> Transactions { get; set; }

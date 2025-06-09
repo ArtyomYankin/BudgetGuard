@@ -16,7 +16,6 @@ namespace HomePlanner.Entitites
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiry { get; set; }
 
-        // Навигационные свойства
         [JsonIgnore]
         [IgnoreDataMember]
         public ICollection<UserAccount> UserAccounts { get; set; }

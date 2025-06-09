@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BG.Data.Entitites
+﻿namespace BG.Data.Entitites
 {
     public class BudgetCategory
     {
         public int Id { get; set; }
-        public decimal PlannedAmount { get; set; } 
+        public decimal PlannedAmount { get; set; }
 
-        // Внешние ключи
         public int BudgetId { get; set; }
         public Budget? Budget { get; set; }
 

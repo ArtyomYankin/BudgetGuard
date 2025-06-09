@@ -35,7 +35,7 @@ namespace BG.Data
                     Name = "Еда",
                     Icon = "fa-utensils",
                     IsDefault = true,
-                    UserId = 1 // Ссылка на системного пользователя
+                    UserId = 1
                 },
                 new Category
                 {
@@ -55,17 +55,14 @@ namespace BG.Data
                 }
             );
 
-            // Уникальный Email пользователя
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            // Ограничение: сумма транзакции > 0
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Amount)
                 .HasPrecision(18, 2);
 
-            // Связи для Transaction
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.UserAccount)
                 .WithMany(a => a.Transactions)
@@ -78,21 +75,18 @@ namespace BG.Data
                 .HasForeignKey(t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Связь Budget -> BudgetCategory
             modelBuilder.Entity<Budget>()
                 .HasMany(b => b.BudgetCategories)
                 .WithOne(bc => bc.Budget)
                 .HasForeignKey(bc => bc.BudgetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Связь BudgetCategory -> Category
             modelBuilder.Entity<BudgetCategory>()
                 .HasOne(bc => bc.Category)
                 .WithMany()
                 .HasForeignKey(bc => bc.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Связи для Account
             modelBuilder.Entity<UserAccount>()
                 .HasOne(a => a.User)
                 .WithMany(u => u.UserAccounts)

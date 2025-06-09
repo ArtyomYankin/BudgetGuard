@@ -20,7 +20,7 @@ namespace HP.Service
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password) // Хеширование пароля
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
             await _authRepository.RegisterAsync(user);
@@ -39,7 +39,6 @@ namespace HP.Service
 
             var token = jwtService.GenerateToken(user);
 
-            // Обновляем Refresh Token (если нужно)
             user.RefreshToken = Guid.NewGuid().ToString();
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
             await _authRepository.SaveChangesAsync();
@@ -64,7 +63,7 @@ namespace HP.Service
                 return null;
 
             var newToken = jwtService.GenerateToken(user);
-            user.RefreshToken = Guid.NewGuid().ToString(); // Генерируем новый Refresh Token
+            user.RefreshToken = Guid.NewGuid().ToString();
             await _authRepository.SaveChangesAsync();
 
 

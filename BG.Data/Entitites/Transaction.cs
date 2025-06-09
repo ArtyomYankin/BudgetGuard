@@ -9,9 +9,8 @@ namespace BG.Data.Entitites
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
-        public TransactionType Type { get; set; } // Доход/Расход
+        public TransactionType Type { get; set; }
 
-        // Внешние ключи
         public int UserAccountId { get; set; }
         public UserAccount UserAccount { get; set; }
 
@@ -20,12 +19,11 @@ namespace BG.Data.Entitites
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
 
-        // Метка (например, "Продукты", "Кафе")
         public string Tag { get; set; }
     }
     public enum TransactionType
     {
-        Income,    // Доход
-        Expense    // Расход
+        Income,
+        Expense
     }
 }
