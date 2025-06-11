@@ -13,6 +13,8 @@ namespace BG.Data.Models
         public Currency Currency { get; set; }
 
         [Range(0, double.MaxValue)]
-        public decimal InitialBalance { get; set; } = 0;
+        public decimal CurrentBalance { get; set; } = 0;
+        public int UserId { get; set; }
+        public bool IsActive { get; set; }
     }
 }

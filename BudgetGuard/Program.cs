@@ -27,7 +27,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetGuardDb"), b => b.MigrationsAssembly("BG.Data")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetGuardDb"), b => b.MigrationsAssembly("BG.Data")), ServiceLifetime.Transient);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]!);
 

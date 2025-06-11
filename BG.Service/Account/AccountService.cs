@@ -7,15 +7,15 @@ namespace BG.Service.Account
 {
     public class AccountService(IAccountRepository _accountRepository, IAuthService _authService) : IAccountService
     {
-        public async Task<AccountDto?> CreateUserAccount(AccountCreateDto userAccountDto, int userId)
+        public async Task<AccountDto?> CreateUserAccount(AccountCreateDto userAccountDto)
         {
             var userAccount = new UserAccount()
             {
                 Name = userAccountDto.Name,
-                Balance = userAccountDto.InitialBalance,
+                Balance = userAccountDto.CurrentBalance,
                 Currency = userAccountDto.Currency,
                 IsActive = true,
-                UserId = userId,
+                UserId = userAccountDto.UserId,
             };
             var account = await _accountRepository.AddAccount(userAccount);
             if (account == null)

@@ -21,8 +21,8 @@ namespace BG.Data.Entitites
     }
     public enum Currency
     {
-        USD,
-        BLR,
-        EUR,
+        USD = 0,
+        BLR = 1,
+        EUR = 2,
     }
 }

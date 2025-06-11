@@ -34,7 +34,11 @@ namespace BG.Repository.Account
 
         public async Task<List<UserAccount>> GetAllUserAccounts(int userId)
         {
-            var userAccs = _appDbContext.UserAccounts.Where(acc => acc.UserId == userId).ToList();
+            var userAccs = new List<UserAccount>();
+            using (var context = _appDbContext)
+            {
+                userAccs = _appDbContext.UserAccounts.Where(acc => acc.UserId == userId).ToList();
+            }
             if (userAccs.Count <= 0)
                 return null;
             return userAccs;
