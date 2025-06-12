@@ -4,6 +4,7 @@ namespace BG.Service.Account
 {
     public interface IAccountService
     {
+        Task<AccountDto> GetUserAccount(int id);
         Task<AccountDto?> CreateUserAccount(AccountCreateDto userAccount);
         Task<AccountDto> UpdateUserAccount(AccountDto accountDto);
         Task DeleteAccount(int accountDId);

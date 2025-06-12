@@ -33,6 +33,13 @@ namespace BudgetGuard.Controllers
             return Ok(accountResponse);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AccountDto>> GetAccount(int id)
+        {
+            var accountResponse = await _accountService.GetUserAccount(id);
+
+            return Ok(accountResponse);
+        }
         [HttpPost]
         public async Task<ActionResult<AccountDto>> UpdateAccount([FromBody] AccountDto dto)
         {

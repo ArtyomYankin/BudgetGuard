@@ -8,5 +8,6 @@ namespace BG.Data.Models
         public string Name { get; set; }
         public Currency Currency { get; set; }
         public decimal CurrentBalance { get; set; }
+        public bool IsActive { get; set; }
     }
 }

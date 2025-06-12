@@ -75,5 +75,21 @@ namespace BG.Service.Account
                 CurrentBalance = account.Balance
             }).ToList();
         }
+
+        public async Task<AccountDto> GetUserAccount(int id)
+        {
+            var account = await _accountRepository.GetAccount(id);
+            if (account == null)
+                return null;
+
+            return new AccountDto()
+            {
+                Id = account.Id,
+                Name = account.Name,
+                Currency = account.Currency,
+                CurrentBalance = account.Balance,
+                IsActive = account.IsActive,
+            };
+        }
     }
 }

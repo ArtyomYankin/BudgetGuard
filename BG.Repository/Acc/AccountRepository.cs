@@ -43,5 +43,13 @@ namespace BG.Repository.Account
                 return null;
             return userAccs;
         }
+
+        public async Task<UserAccount> GetAccount(int id)
+        {
+            var account = _appDbContext.UserAccounts.FirstOrDefault(acc => acc.Id == id);
+            if (account == null)
+                return null;
+            return account;
+        }
     }
 }
