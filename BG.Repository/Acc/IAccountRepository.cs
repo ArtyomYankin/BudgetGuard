@@ -6,7 +6,7 @@ namespace BG.Repository.Acc
         Task<UserAccount> GetAccount(int id);
         Task<UserAccount> AddAccount(UserAccount account);
         Task<UserAccount> UpdateAccount(UserAccount account);
-        Task RemoveAccount(int id);
+        Task<bool> RemoveAccount(int id);
         Task<List<UserAccount>> GetAllUserAccounts(int userId);
     }
 }

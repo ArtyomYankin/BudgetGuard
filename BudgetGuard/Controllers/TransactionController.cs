@@ -1,32 +1,45 @@
 ﻿using BG.Data.Models;
 using BG.Service.Transactions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetGuard.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class TransactionController(ITransactionsService _transactionsService) : ControllerBase
+    [Route("api/[controller]")]
+    [Authorize]
+    public class TransactionsController(ITransactionsService _transactionsService) : ControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetByAccount(int accountId)
+        [HttpGet("account/{accountId}")]
+        [ProducesResponseType(typeof(IEnumerable<TransactionDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByAccountId(int accountId)
         {
-            if (accountId <= 0)
-                return BadRequest("Account id can't be 0");
-            var transaction = _transactionsService.GetTransactionByAccountAsync(accountId);
-            if (transaction == null)
-                return Ok("There are no transactions on your account");
-            return Ok(transaction);
+            var transactions = await _transactionsService.GetTransactionsByAccountAsync(accountId);
+            if (transactions == null || !transactions.Any())
+                return NotFound("No transactions found for this account");
+            return Ok(transactions);
         }
+
         [HttpPost]
-        public async Task<ActionResult<TransactionDto>> CreateTransaction([FromBody] TransactionCreateDto dto)
+        [ProducesResponseType(typeof(TransactionDto), StatusCodes.Status201Created)]
+        public async Task<IActionResult> Create([FromBody] TransactionCreateDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var transactionReposnse = await _transactionsService.AddTransactionAsync(dto);
+            var transaction = await _transactionsService.AddTransactionAsync(dto);
+            return Ok(transaction);
+        }
 
-            return Ok(transactionReposnse);
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(TransactionDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var transaction = await _transactionsService.GetTransactionByIdAsync(id);
+            if (transaction == null)
+                return NotFound();
+
+            return Ok();
         }
     }
 }

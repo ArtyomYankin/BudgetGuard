@@ -1,0 +1,76 @@
+services:
+  budget-guard.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=3000
+      - ASPNETCORE_HTTPS_PORTS=3001
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/bg.pfx
+    container_name: budget-guard.api
+    image: budget-guard.api
+    build:
+      context: .
+      dockerfile: BudgetGuard/Dockerfile
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      database.server:
+        condition: service_healthy
+    networks:
+      - budgetguard-network
+
+  database.server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: database.server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SuperPassword123!
+      - MSSQL_PID=Developer
+      - MSSQL_MEMORY_LIMIT_MB=2048
+      - MSSQL_TCP_PORT=1433
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'SuperPassword123!' -Q 'SELECT 1' || exit 1"]
+      interval: 15s
+      timeout: 15s
+      retries: 30
+      start_period: 2m
+    networks:
+      - budgetguard-network
+
+  budget-guard.client:
+    build:
+      context: D:/Projects/BudgetGuardReactApp/budget-guard
+      dockerfile: Dockerfile
+    image: budget-guard.client
+    container_name: budget-guard.client
+    ports:
+      - "5000:5000"
+    volumes:
+    - D:/Projects/BudgetGuardReactApp/budget-guard:/app
+    - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - VITE_API_BASE_URL=http://localhost:3000
+    networks:
+      - budgetguard-network
+    depends_on:
+      budget-guard.api:
+        condition: service_healthy
+      database.server:
+        condition: service_healthy
+
+volumes:
+  sqlserver_data:
+  aspnet_https:
+
+networks:
+  budgetguard-network:
+    driver: bridge

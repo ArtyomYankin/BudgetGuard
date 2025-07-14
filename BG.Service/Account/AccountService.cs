@@ -9,10 +9,13 @@ namespace BG.Service.Account
     {
         public async Task<AccountDto?> CreateUserAccount(AccountCreateDto userAccountDto)
         {
+            var user = _authService.GetUserById(userAccountDto.UserId);
+            if (user == null)
+                return null;
             var userAccount = new UserAccount()
             {
                 Name = userAccountDto.Name,
-                Balance = userAccountDto.CurrentBalance,
+                Balance = userAccountDto.InitialBalance,
                 Currency = userAccountDto.Currency,
                 IsActive = true,
                 UserId = userAccountDto.UserId,
@@ -30,9 +33,9 @@ namespace BG.Service.Account
             };
         }
 
-        public async Task DeleteAccount(int accountId)
+        public async Task<bool> DeleteAccount(int accountId)
         {
-            await _accountRepository.RemoveAccount(accountId);
+            return await _accountRepository.RemoveAccount(accountId);
         }
 
         public async Task<List<AccountDto>> GetAllAccountsForUser(int userId)
@@ -41,20 +44,21 @@ namespace BG.Service.Account
             if (user == null)
                 return null;
             var userAccounts = await _accountRepository.GetAllUserAccounts(userId);
+            if (userAccounts == null)
+                return new List<AccountDto>();
             var userAccountsDto = ToAccountDtoList(userAccounts);
             return userAccountsDto;
         }
 
-        public async Task<AccountDto> UpdateUserAccount(AccountDto accountDto)
+        public async Task<AccountDto> UpdateUserAccount(AccountUpdateDto accountDto)
         {
-            var userAccount = new UserAccount()
-            {
-                Name = accountDto.Name,
-                Balance = accountDto.CurrentBalance,
-                Currency = accountDto.Currency,
-                Id = accountDto.Id,
-            };
-            var updatedAccount = await _accountRepository.UpdateAccount(userAccount);
+            var account = _accountRepository.GetAccount(accountDto.Id).Result;
+            account.Name = accountDto.Name;
+            account.Balance = accountDto.CurrentBalance;
+            account.Currency = accountDto.Currency;
+            account.IsActive = accountDto.IsActive;
+
+            var updatedAccount = await _accountRepository.UpdateAccount(account);
 
             return new AccountDto()
             {
@@ -90,6 +94,21 @@ namespace BG.Service.Account
                 CurrentBalance = account.Balance,
                 IsActive = account.IsActive,
             };
+        }
+
+        public async Task<UserAccount> GetUserAcc(int id)
+        {
+            var account = await _accountRepository.GetAccount(id);
+            if (account == null)
+                return null;
+
+            return account;
+        }
+
+        public async Task<UserAccount> UpdateUserAccount(UserAccount account)
+        {
+            var updatedFccount = await _accountRepository.UpdateAccount(account);
+            return account;
         }
     }
 }

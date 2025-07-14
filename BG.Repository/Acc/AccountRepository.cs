@@ -13,12 +13,14 @@ namespace BG.Repository.Account
             return newAccount.Entity;
         }
 
-        public async Task RemoveAccount(int id)
+        public async Task<bool> RemoveAccount(int id)
         {
             var accountToDelete = await _appDbContext.UserAccounts.FindAsync(id);
-            if (accountToDelete != null)
-                _appDbContext.UserAccounts.Remove(accountToDelete);
+            if (accountToDelete == null)
+                return false;
+            _appDbContext.UserAccounts.Remove(accountToDelete);
             await SaveChangesAsync();
+            return true;
         }
 
         public async Task<UserAccount> UpdateAccount(UserAccount account)

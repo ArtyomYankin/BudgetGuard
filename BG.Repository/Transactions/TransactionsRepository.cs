@@ -26,7 +26,9 @@ namespace BG.Repository.Transactions
 
         public async Task<List<Transaction>?> GetByAccountAsync(int accountId)
         {
-            var transactions = _context.Transactions.Where(tran => tran.UserAccountId == accountId).ToList();
+            var transactions = await _context.Transactions.Where(tran => tran.UserAccountId == accountId).OrderByDescending(t => t.Date)
+            .Include(t => t.Category)
+            .ToListAsync();
             if (transactions.Count > 0)
                 return transactions;
             return null;

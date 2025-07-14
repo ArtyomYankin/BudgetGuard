@@ -9,7 +9,7 @@ namespace BG.Data.Models
         public TransactionType TransactionType { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public CategoryDto? Category { get; set; }
+        public int? CategoryId { get; set; }
         public int UserAccountId { get; set; }
 
     }

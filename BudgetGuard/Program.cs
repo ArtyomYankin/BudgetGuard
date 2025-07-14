@@ -1,9 +1,11 @@
 ﻿using BG.Data;
+using BG.Repository;
 using BG.Repository.Acc;
 using BG.Repository.Account;
 using BG.Repository.Auth;
 using BG.Repository.Transactions;
 using BG.Service.Account;
+using BG.Service.Categories;
 using BG.Service.JWTService;
 using BG.Service.Transactions;
 using HP.Service;
@@ -63,10 +65,12 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ITransactionsRepository, TransactionsRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITransactionsService, TransactionService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -74,6 +78,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+
+    //using var serviceScope = app.Services.CreateScope();
+    //using var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
+    //dbContext?.Database.Migrate();
 }
 
 app.UseCors("MyPolicy");
